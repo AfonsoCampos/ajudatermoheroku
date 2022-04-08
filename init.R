@@ -12,8 +12,6 @@ my_packages = c("shinydashboardPlus",
                 "shinymanager",  
                 "shinydashboard", 
                 "shinyWidgets",
-                "ggfortify",
-                "broom",
                 "plotly",
                 "DT")
 
