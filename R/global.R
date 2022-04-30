@@ -12,5 +12,4 @@ library(shinydashboard) #acho que da para remover
 library(shinyWidgets)
 library(plotly)
 library(DT)
-
-
+library(rintrojs) # ajuda tutorial 

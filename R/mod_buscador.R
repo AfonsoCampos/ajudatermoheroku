@@ -1,35 +1,46 @@
-dados <- read_rds("R/dicio_base_app.rds")
-
-# Histograma car 1 ----------------------------------------------------------------------------
+dados <- read_rds("R/dicio_base_app.rds") %>%  
+  distinct(palavra_limpa, .keep_all = TRUE) # removendo algumas palavras repetidas desconsiderando acentos
+    
 baseletras <- data.frame(letras = LETTERS)
-
-# Login config --------------------------------------------------------------------------------
-
 
 
 mod_buscador_UI <- function(id) {
   ns <- NS(id)
   tagList( #aqui colocar todas a ui para ser empacotada 
     sidebarPanel(width = 2,
-                 selectInput(ns("idntem"), "Não Tem as Letras:", choices = LETTERS, multiple = TRUE), 
+                 tags$head(tags$script(src = "message-handler.js")),# faz parte do botao ajuda
+                 actionButton(ns("help") , icon("fa-solid fa-info"), 
+                              style="color: #fff; background-color: #AEF359; border-color: #AEF359"),
+                 introBox(
+                 selectInput(ns("idntem"), "Não Tem as Letras:", choices = LETTERS, multiple = TRUE),
+                 data.step = 1,data.intro = "Preencha com as letras que a palavra não contém. Siga sempre a ordem de ações a cada novo chute para evitar erros de preenchimento!"),
+                 introBox(
                  selectInput(ns("idtem"), "Tem as Letras:", choices = LETTERS, multiple = TRUE), #choices NULL e reativo
+                 data.step = 2,data.intro = "Preencha com as letras que estão contidas na palavra mesmo sabendo ou não a posição."),
                  tags$strong("Sei a posição da letra?"),
+                 
+                 introBox(
                  selectInput(ns("idlocesta1"), "Posição 1:", choices = c("",LETTERS), multiple = FALSE),# selected =  character(0)
+                 data.step = 3,data.intro = "Se você souber a posição coloque a letra na posição correta."),
                  selectInput(ns("idlocesta2"), "Posição 2:", choices = c("",LETTERS), multiple = FALSE),
                  selectInput(ns("idlocesta3"), "Posição 3:", choices = c("",LETTERS), multiple = FALSE),
                  selectInput(ns("idlocesta4"), "Posição 4:", choices = c("",LETTERS), multiple = FALSE),
                  selectInput(ns("idlocesta5"), "Posição 5:", choices = c("",LETTERS), multiple = FALSE),
                  tags$strong("Esta na palavra, mas fora da posição?"),
+                 
+                 introBox(
                  selectInput(ns("idlocnao1"), "Não é Posição 1:", choices = LETTERS, multiple = TRUE, selected =  character(0)),
+                 data.step = 4,data.intro = "Você sabe que a palavra tem a letra, todavia não sebe a posição exata. Nos quadros abaixo você pode colocar onde a letra não está na palavra."),
                  selectInput(ns("idlocnao2"), "Não é Posição 2:", choices = LETTERS, multiple = TRUE, selected =  character(0)),
                  selectInput(ns("idlocnao3"), "Não é Posição 3:", choices = LETTERS, multiple = TRUE, selected =  character(0)),
                  selectInput(ns("idlocnao4"), "Não é Posição 4:", choices = LETTERS, multiple = TRUE, selected =  character(0)),
                  selectInput(ns("idlocnao5"), "Não é Posição 5:", choices = LETTERS, multiple = TRUE, selected =  character(0)),
                  useShinyjs(), #para btn automatico
+                 introBox(
                  actionButton(ns("idchuta"), 
                                "Novo Chute!", icon("fa-solid fa-lightbulb"), 
-                              style="color: #fff; background-color: #C37D0E; border-color: #C37D0E")
-                
+                              style="color: #fff; background-color: #C37D0E; border-color: #C37D0E"),
+                 data.step = 5,data.intro = "Após os passos acima você pode fazer seu próprio chute, consultar as palavras disponíveis na tabela ou clicar neste botão para um chute aleatório de uma das palavras restantes do banco de palavras.")
                  
     ),
              mainPanel(width = 10, 
@@ -92,11 +103,13 @@ mod_buscador_sv <- function(id){
   moduleServer(
     id, 
     function(input, output, session) {
-
-
+  
 
 # Objetos Reativos ----------------------------------------------------------------------------
-
+      observeEvent(input$help,
+                   introjs(session, options = list("showBullets"="false", "showProgress"="true", 
+                                                   "showStepNumbers"="false","nextLabel"="Next","prevLabel"="Prev","skipLabel"="Skip"))
+      )
 # contem 
       contem <- reactive({
         contem <- c("^", paste0(paste0("(?=.*", input$idtem),")"),".+")
@@ -162,6 +175,8 @@ mod_buscador_sv <- function(id){
           shinyjs::click("idchuta")
           primeiro$destroy() # remove o observe depois do primeiro clique
         })
+        
+        
 # saidas --------------------------------------------------------------------------------------
 
 # Boxes  --------------------------------------------------------------------------------------

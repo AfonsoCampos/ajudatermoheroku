@@ -1,8 +1,9 @@
 
-# Gerador de Mapas e Planilhas experimentos  --------------------------------------------------
+#Buscador Palavra  --------------------------------------------------
 
 
 ui =  tagList(
+  introjsUI(), #textos help
    # html/css
     tags$head(tags$style(HTML('.info-box {min-height: 78px;} 
                               .info-box-icon {height: 78px; line-height: 78px;}
