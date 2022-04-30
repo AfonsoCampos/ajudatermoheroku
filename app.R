@@ -27,10 +27,7 @@ ui =  tagList(
   
 server = function(input, output) {
 
-  #tabelas aba superior  
   mod_buscador_sv("parte_tabelas")
-
-  
   
   }
 

@@ -64,15 +64,7 @@ mod_buscador_UI <- function(id) {
                            fluidRow(
                            column(12,
                                   DT::dataTableOutput(ns("tabelanomes"))
-                           #   plotOutput(ns("mapacampo"),
-                           #                width = "100%", 
-                           #                height =  "1200px"))
-                           # ),
-                          # 
-                          # fluidRow(
-                          # column(12, plotlyOutput(ns("resumo2"),
-                          #                         width = "100%", 
-                          #                         height =  "360px")))
+                       
                            ))),
                           
                           box(title = "Frequência das Letras em Cada Posição",
@@ -169,11 +161,11 @@ mod_buscador_sv <- function(id){
         sample(dadosfill()$palavra_limpa,1)
       })
       
-      # primeiro clique no botao é autamtico
+      # primeiro clique no botão de chute é automático
       
         primeiro <- observe({
           shinyjs::click("idchuta")
-          primeiro$destroy() # remove o observe depois do primeiro clique
+          primeiro$destroy() # remove o objeto do observador... 
         })
         
         
@@ -256,7 +248,7 @@ mod_buscador_sv <- function(id){
           facet_wrap(~Casa, ncol = 5)+
           theme_minimal()+
           coord_flip()+
-          ylab("Frquência nas Palavras Restantes")+
+          ylab("Frquências nas Palavras Restantes")+
           scale_fill_gradient(low="lightgreen", high="darkgreen") 
         
         ggplotly(baseplot)

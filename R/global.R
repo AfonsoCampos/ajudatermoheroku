@@ -8,7 +8,7 @@ library(shinythemes)
 library(shinyjs)
 library(tidyverse)
 library(shinymanager)  
-library(shinydashboard) #acho que da para remover 
+library(shinydashboard) 
 library(shinyWidgets)
 library(plotly)
 library(DT)
