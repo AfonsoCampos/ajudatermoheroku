@@ -13,7 +13,7 @@ my_packages = c("shinydashboardPlus",
                 "shinydashboard", 
                 "shinyWidgets",
                 "plotly",
-                "DT")
+                "DT", "rintrojs")
 
 install_if_missing = function(p) {
   if (p %in% rownames(installed.packages()) == FALSE) {
